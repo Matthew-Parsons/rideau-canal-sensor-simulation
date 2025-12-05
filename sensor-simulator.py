@@ -11,7 +11,7 @@ def get_telemetry():
         "surface-temperature": random.uniform(-20.0, 5.0),
         "ice-thickness": random.uniform(15.0, 70.0),
         "snow-accumulation": random.uniform(0.0, 30.0),
-        "external-temperature": random.uniform(-20.0, 5.0)
+        "externalTemperature": random.uniform(-20.0, 5.0)
     }
 
 def main():
