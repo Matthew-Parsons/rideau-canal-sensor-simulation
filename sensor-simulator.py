@@ -1,42 +1,48 @@
 import time
 import random
+import threading
 from azure.iot.device import IoTHubDeviceClient, Message
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-CONNECTION_STRINGS = [os.getenv("DOWSLAKE_CONNECTION_STRING"), 
-                      os.getenv("FIFTH_AVENUE_CONNECTION_STRING"), 
-                      os.getenv("NAC_CONNECTION_STRING")]
+DowsLakeDevice = os.getenv("DOWS_LAKE_CONNECTION_STRING")
+FifthAvenueDevice = os.getenv("FIFTH_AVENUE_CONNECTION_STRING")
+NACDevice = os.getenv("NAC_CONNECTION_STRING")
 
-def get_telemetry():
+def get_telemetry(location):
     return {
-        "surface-temperature": random.uniform(-20.0, 5.0),
-        "ice-thickness": random.uniform(15.0, 70.0),
-        "snow-accumulation": random.uniform(0.0, 30.0),
-        "externalTemperature": random.uniform(-20.0, 5.0)
+        "location": location,
+        "surface_temperature": random.uniform(-20.0, 5.0),
+        "ice_thickness": random.uniform(15.0, 70.0),
+        "snow_accumulation": random.uniform(0.0, 30.0),
+        "ext_Temperature": random.uniform(-20.0, 5.0)
     }
 
-def main():
-    clients = [IoTHubDeviceClient.create_from_connection_string(cs) for cs in CONNECTION_STRINGS]
+def main(location,connection_string):
+    client = IoTHubDeviceClient.create_from_connection_string(connection_string)
 
-    print("Sending telemetry from 3 devices to IoT Hub...")
+    print("Sending telemetry to IoT Hub...")
     try:
         while True:
-            for i, client in enumerate(clients, start=1):
-                telemetry = get_telemetry()
-                message = Message(str(telemetry))
-                client.send_message(message)
-                print(f"Sent message: {message}")
+            telemetry = get_telemetry(location)
+            message = Message(str(telemetry))
+            client.send_message(message)
+            print(f"Sent message: {message}")
             time.sleep(10)
-            
     except KeyboardInterrupt:
         print("Stopped sending messages.")
-        
     finally:
-        for client in clients:
-            client.disconnect()
+        client.disconnect()
 
 if __name__ == "__main__":
-    main()
+    device_threads = [
+        threading.Thread(target=main, args=("Dow's-Lake", DowsLakeDevice)),
+        threading.Thread(target=main, args=("Fifth-Avenue", FifthAvenueDevice)),
+        threading.Thread(target=main, args=("NAC", NACDevice))]
+    for t in device_threads:
+        t.start()
+
+    for t in device_threads:
+        t.join()
