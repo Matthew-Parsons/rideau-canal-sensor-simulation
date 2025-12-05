@@ -1,10 +1,14 @@
 import time
 import random
 from azure.iot.device import IoTHubDeviceClient, Message
+from dotenv import load_dotenv
+import os
 
-CONNECTION_STRINGS = ["HostName=rideau-canal-iot.azure-devices.net;DeviceId=NAC;SharedAccessKey=pCh80tlnb2WzaDBLx+HJvC+IdSG9qs7ArlxoLrrzMHI=", 
-                      "HostName=rideau-canal-iot.azure-devices.net;DeviceId=Dow's-Lake;SharedAccessKey=Zo3T/1c8or7dJTqkHxX+aPRlZGlhZnKDjqoIOmHP+KM=", 
-                      "HostName=rideau-canal-iot.azure-devices.net;DeviceId=Fifth-Avenue;SharedAccessKey=wgemEh+UQ6TcVJq/A5e/25kN0ZrKfdDfvYc6HjS/1n8="]
+load_dotenv()
+
+CONNECTION_STRINGS = [os.getenv("DOWSLAKE_CONNECTION_STRING"), 
+                      os.getenv("FIFTH_AVENUE_CONNECTION_STRING"), 
+                      os.getenv("NAC_CONNECTION_STRING")]
 
 def get_telemetry():
     return {
@@ -26,8 +30,10 @@ def main():
                 client.send_message(message)
                 print(f"Sent message: {message}")
             time.sleep(10)
+            
     except KeyboardInterrupt:
         print("Stopped sending messages.")
+        
     finally:
         for client in clients:
             client.disconnect()
