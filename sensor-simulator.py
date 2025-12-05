@@ -2,7 +2,9 @@ import time
 import random
 from azure.iot.device import IoTHubDeviceClient, Message
 
-CONNECTION_STRINGS = ["Your IoT Hub device connection string here", "connection2", "connection3"]
+CONNECTION_STRINGS = ["HostName=rideau-canal-iot.azure-devices.net;DeviceId=NAC;SharedAccessKey=pCh80tlnb2WzaDBLx+HJvC+IdSG9qs7ArlxoLrrzMHI=", 
+                      "HostName=rideau-canal-iot.azure-devices.net;DeviceId=Dow's-Lake;SharedAccessKey=Zo3T/1c8or7dJTqkHxX+aPRlZGlhZnKDjqoIOmHP+KM=", 
+                      "HostName=rideau-canal-iot.azure-devices.net;DeviceId=Fifth-Avenue;SharedAccessKey=wgemEh+UQ6TcVJq/A5e/25kN0ZrKfdDfvYc6HjS/1n8="]
 
 def get_telemetry():
     return {
