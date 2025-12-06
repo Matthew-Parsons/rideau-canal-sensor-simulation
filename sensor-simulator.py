@@ -38,7 +38,7 @@ def main(location,connection_string):
 
 if __name__ == "__main__":
     device_threads = [
-        threading.Thread(target=main, args=("Dows Lake", DowsLakeDevice)),
+        threading.Thread(target=main, args=("Dow's Lake", DowsLakeDevice)),
         threading.Thread(target=main, args=("Fifth Avenue", FifthAvenueDevice)),
         threading.Thread(target=main, args=("NAC", NACDevice))]
     for t in device_threads:
