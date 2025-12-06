@@ -17,7 +17,7 @@ def get_telemetry(location):
         "surface_temperature": random.uniform(-20.0, 5.0),
         "ice_thickness": random.uniform(15.0, 70.0),
         "snow_accumulation": random.uniform(0.0, 30.0),
-        "ext_Temperature": random.uniform(-20.0, 5.0)
+        "ext_temperature": random.uniform(-20.0, 5.0)
     }
 
 def main(location,connection_string):
@@ -38,8 +38,8 @@ def main(location,connection_string):
 
 if __name__ == "__main__":
     device_threads = [
-        threading.Thread(target=main, args=("Dow's-Lake", DowsLakeDevice)),
-        threading.Thread(target=main, args=("Fifth-Avenue", FifthAvenueDevice)),
+        threading.Thread(target=main, args=("Dows Lake", DowsLakeDevice)),
+        threading.Thread(target=main, args=("Fifth Avenue", FifthAvenueDevice)),
         threading.Thread(target=main, args=("NAC", NACDevice))]
     for t in device_threads:
         t.start()
