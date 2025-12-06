@@ -43,7 +43,7 @@ def main(location,connection_string):
         client.disconnect()
 
 if __name__ == "__main__":
-    # run each device's script on separate threads
+    # make each device's script a separate process via threading
     device_threads = [
         threading.Thread(target=main, args=("Dow's Lake", DowsLakeDevice)),
         threading.Thread(target=main, args=("Fifth Avenue", FifthAvenueDevice)),
